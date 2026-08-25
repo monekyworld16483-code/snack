@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snack Business</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #080d18;
+    color: white;
+    min-height: 100vh;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* PASSWORD */
+
+#lockScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.lockBox {
+    width: 100%;
+    max-width: 420px;
+    background: #101827;
+    border: 1px solid #1d2b43;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+.logo {
+    width: 65px;
+    height: 65px;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1677ff;
+    font-size: 30px;
+}
+
+.lockBox h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.lockBox p {
+    color: #8e9bb0;
+    margin-bottom: 28px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #26364f;
+    background: #0b1220;
+    color: white;
+    outline: none;
+    margin-bottom: 12px;
+}
+
+input:focus, select:focus {
+    border-color: #1677ff;
+}
+
+.primary {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    background: #1677ff;
+    color: white;
+    font-weight: bold;
+}
+
+.primary:hover {
+    background: #0d65df;
+}
+
+.error {
+    color: #ff5d6c;
+    margin-top: 12px;
+}
+
+/* APP */
+
+#app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #0c1320;
+    border-right: 1px solid #1b283d;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.brand span {
+    color: #1677ff;
+}
+
+.nav button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: #8996aa;
+    padding: 13px;
+    border-radius: 9px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: #14233b;
+    color: white;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 30px;
+    width: calc(100% - 240px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    color: #7f8ca0;
+    margin-top: 5px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #101827;
+    border: 1px solid #1d2b43;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.card .label {
+    color: #7f8ca0;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.card .value {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.blue {
+    color: #3188ff;
+}
+
+.green {
+    color: #30d69b;
+}
+
+.red {
+    color: #ff6370;
+}
+
+.section {
+    background: #101827;
+    border: 1px solid #1d2b43;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.sectionHeader h2 {
+    font-size: 18px;
+}
+
+.addBtn {
+    background: #1677ff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: #718096;
+    font-size: 12px;
+    padding: 12px;
+    border-bottom: 1px solid #1d2b43;
+}
+
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #172238;
+    font-size: 14px;
+}
+
+.badge {
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    background: #14233b;
+    color: #5d9cff;
+}
+
+.empty {
+    text-align: center;
+    color: #718096;
+    padding: 35px;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.modalBox {
+    width: 100%;
+    max-width: 450px;
+    background: #101827;
+    border: 1px solid #26364f;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.modalBox h2 {
+    margin-bottom: 20px;
+}
+
+.modalButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.cancel {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    background: #1a2638;
+    color: white;
+}
+
+.modalButtons .primary {
+    flex: 1;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 650px) {
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid #1b283d;
+    }
+
+    #app {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 5px;
+    }
+
+    table {
+        min-width: 650px;
+    }
+
+    .section {
+        overflow-x: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+
+<div id="lockScreen">
+
+    <div class="lockBox">
+
+        <div class="logo">🥤</div>
+
+        <h1>Snack Business</h1>
+
+        <p>Private Project</p>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter project password"
+            onkeydown="if(event.key==='Enter') unlock()"
+        >
+
+        <button class="primary" onclick="unlock()">
+            ENTER PROJECT
+        </button>
+
+        <div id="error" class="error"></div>
+
+    </div>
+
+</div>
+
+
+<!-- APP -->
+
+<div id="app" class="hidden">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            🥤 <span>Snack</span> Business
+        </div>
+
+        <div class="nav">
+
+            <button class="active" onclick="showPage('dashboard',this)">
+                📊 Dashboard
+            </button>
+
+            <button onclick="showPage('inventory',this)">
+                📦 Inventory
+            </button>
+
+            <button onclick="showPage('sales',this)">
+                🧾 Sales
+            </button>
+
+            <button onclick="showPage('expenses',this)">
+                💸 Expenses
+            </button>
+
+            <button onclick="showPage('money',this)">
+                💰 Money
+            </button>
+
+            <button onclick="showPage('activity',this)">
+                📜 Activity
+            </button>
+
+            <button onclick="showPage('settings',this)">
+                ⚙️ Settings
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <!-- DASHBOARD -->
+
+        <section id="dashboard">
+
+            <div class="header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Snack Business overview</p>
+                </div>
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="label">Revenue</div>
+                    <div class="value blue" id="revenue">$0.00</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Expenses</div>
+                    <div class="value red" id="expenses">$0.00</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Profit</div>
+                    <div class="value green" id="profit">$0.00</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Balance</div>
+                    <div class="value" id="balance">$0.00</div>
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <div class="sectionHeader">
+                    <h2>Recent Activity</h2>
+                </div>
+
+                <div id="recentActivity"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INVENTORY -->
+
+        <section id="inventory" class="hidden">
+
+            <div class="header">
+                <div>
+                    <h1>Inventory</h1>
+                    <p>Manage your products</p>
+                </div>
+
+                <button class="addBtn" onclick="openProductModal()">
+                    + Add Product
+                </button>
+            </div>
+
+            <div class="section">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Cost</th>
+                            <th>Selling Price</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="inventoryTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- SALES -->
+
+        <section id="sales" class="hidden">
+
+            <div class="header">
+
+                <div>
+                    <h1>Sales</h1>
+                    <p>Track your sales</p>
+                </div>
+
+                <button class="addBtn" onclick="openSaleModal()">
+                    + Record Sale
+                </button>
+
+            </div>
+
+            <div class="section">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Revenue</th>
+                            <th>Person</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="salesTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- EXPENSES -->
+
+        <section id="expenses" class="hidden">
+
+            <div class="header">
+
+                <div>
+                    <h1>Expenses</h1>
+                    <p>Track business spending</p>
+                </div>
+
+                <button class="addBtn" onclick="openExpenseModal()">
+                    + Add Expense
+                </button>
+
+            </div>
+
+            <div class="section">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Expense</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Person</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="expensesTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- MONEY -->
+
+        <section id="money" class="hidden">
+
+            <div class="header">
+
+                <div>
+                    <h1>Money</h1>
+                    <p>Business finances</p>
+                </div>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="label">Revenue</div>
+                    <div class="value blue" id="moneyRevenue">$0</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Expenses</div>
+                    <div class="value red" id="moneyExpenses">$0</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Profit</div>
+                    <div class="value green" id="moneyProfit">$0</div>
+                </div>
+
+                <div class="card">
+                    <div class="label">Balance</div>
+                    <div class="value" id="moneyBalance">$0</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACTIVITY -->
+
+        <section id="activity" class="hidden">
+
+            <div class="header">
+
+                <div>
+                    <h1>Activity</h1>
+                    <p>Everything happening in the business</p>
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <div id="activityList"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SETTINGS -->
+
+        <section id="settings" class="hidden">
+
+            <div class="header">
+
+                <div>
+                    <h1>Settings</h1>
+                    <p>Project settings</p>
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <h2 style="margin-bottom:15px;">Project Name</h2>
+
+                <input id="projectName" value="Snack Business">
+
+                <button class="primary" onclick="saveProjectName()">
+                    Save Project Name
+                </button>
+
+                <br><br>
+
+                <h2 style="margin-bottom:15px;">Change Password</h2>
+
+                <input
+                    type="password"
+                    id="newPassword"
+                    placeholder="New password"
+                >
+
+                <button class="primary" onclick="changePassword()">
+                    Change Password
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- PRODUCT MODAL -->
+
+<div id="productModal" class="modal hidden">
+
+    <div class="modalBox">
+
+        <h2>Add Product</h2>
+
+        <input id="productName" placeholder="Product name">
+
+        <input id="productCategory" placeholder="Category">
+
+        <input
+            id="productQuantity"
+            type="number"
+            placeholder="Quantity"
+        >
+
+        <input
+            id="productCost"
+            type="number"
+            step="0.01"
+            placeholder="Cost per item"
+        >
+
+        <input
+            id="productPrice"
+            type="number"
+            step="0.01"
+            placeholder="Selling price"
+        >
+
+        <div class="modalButtons">
+
+            <button class="cancel" onclick="closeModals()">
+                Cancel
+            </button>
+
+            <button class="primary" onclick="addProduct()">
+                Add Product
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SALE MODAL -->
+
+<div id="saleModal" class="modal hidden">
+
+    <div class="modalBox">
+
+        <h2>Record Sale</h2>
+
+        <select id="saleProduct"></select>
+
+        <input
+            id="saleQuantity"
+            type="number"
+            placeholder="Quantity sold"
+        >
+
+        <input
+            id="salePerson"
+            placeholder="Your name"
+        >
+
+        <div class="modalButtons">
+
+            <button class="cancel" onclick="closeModals()">
+                Cancel
+            </button>
+
+            <button class="primary" onclick="addSale()">
+                Record Sale
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- EXPENSE MODAL -->
+
+<div id="expenseModal" class="modal hidden">
+
+    <div class="modalBox">
+
+        <h2>Add Expense</h2>
+
+        <input id="expenseName" placeholder="Expense name">
+
+        <input
+            id="expenseAmount"
+            type="number"
+            step="0.01"
+            placeholder="Amount"
+        >
+
+        <input id="expenseCategory" placeholder="Category">
+
+        <input id="expensePerson" placeholder="Person who paid">
+
+        <div class="modalButtons">
+
+            <button class="cancel" onclick="closeModals()">
+                Cancel
+            </button>
+
+            <button class="primary" onclick="addExpense()">
+                Add Expense
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+let data = JSON.parse(
+    localStorage.getItem("snackBusiness")
+) || {
+
+    password: "1234",
+
+    projectName: "Snack Business",
+
+    products: [],
+
+    sales: [],
+
+    expenses: [],
+
+    activity: []
+
+};
+
+
+/* =========================
+   SAVE
+========================= */
+
+function save() {
+
+    localStorage.setItem(
+        "snackBusiness",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+function unlock() {
+
+    const password =
+        document.getElementById("password").value;
+
+    if(password === data.password) {
+
+        document
+            .getElementById("lockScreen")
+            .classList.add("hidden");
+
+        document
+            .getElementById("app")
+            .classList.remove("hidden");
+
+        render();
+
+    } else {
+
+        document
+            .getElementById("error")
+            .textContent =
+            "Incorrect password.";
+
+    }
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page, button) {
+
+    document
+        .querySelectorAll("main section")
+        .forEach(section => {
+            section.classList.add("hidden");
+        });
+
+    document
+        .getElementById(page)
+        .classList.remove("hidden");
+
+    document
+        .querySelectorAll(".nav button")
+        .forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    render();
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function calculateRevenue() {
+
+    return data.sales.reduce(
+        (total, sale) =>
+        total + sale.revenue,
+        0
+    );
+
+}
+
+
+function calculateExpenses() {
+
+    return data.expenses.reduce(
+        (total, expense) =>
+        total + expense.amount,
+        0
+    );
+
+}
+
+
+function calculateProfit() {
+
+    return calculateRevenue()
+        - calculateExpenses();
+
+}
+
+
+function money(value) {
+
+    return "$" + value.toFixed(2);
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+function openProductModal() {
+
+    document
+        .getElementById("productModal")
+        .classList.remove("hidden");
+
+}
+
+
+function addProduct() {
+
+    const name =
+        document.getElementById("productName").value;
+
+    const category =
+        document.getElementById("productCategory").value;
+
+    const quantity =
+        Number(
+            document.getElementById("productQuantity").value
+        );
+
+    const cost =
+        Number(
+            document.getElementById("productCost").value
+        );
+
+    const price =
+        Number(
+            document.getElementById("productPrice").value
+        );
+
+    if(!name || quantity < 0) return;
+
+    data.products.push({
+
+        id: Date.now(),
+
+        name,
+
+        category,
+
+        quantity,
+
+        cost,
+
+        price
+
+    });
+
+    addActivity(
+        "Added product: " + name
+    );
+
+    save();
+
+    closeModals();
+
+    render();
+
+}
+
+
+/* =========================
+   SALES
+========================= */
+
+function openSaleModal() {
+
+    const select =
+        document.getElementById("saleProduct");
+
+    select.innerHTML = "";
+
+    data.products.forEach(product => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = product.id;
+
+        option.textContent =
+            product.name +
+            " (" +
+            product.quantity +
+            " available)";
+
+        select.appendChild(option);
+
+    });
+
+    document
+        .getElementById("saleModal")
+        .classList.remove("hidden");
+
+}
+
+
+function addSale() {
+
+    const productId =
+        Number(
+            document.getElementById("saleProduct").value
+        );
+
+    const quantity =
+        Number(
+            document.getElementById("saleQuantity").value
+        );
+
+    const person =
+        document.getElementById("salePerson").value
+        || "Unknown";
+
+    const product =
+        data.products.find(
+            p => p.id === productId
+        );
+
+    if(!product) return;
+
+    if(quantity <= 0) return;
+
+    if(quantity > product.quantity) {
+
+        alert("Not enough inventory.");
+
+        return;
+
+    }
+
+    product.quantity -= quantity;
+
+    const revenue =
+        quantity * product.price;
+
+    data.sales.push({
+
+        id: Date.now(),
+
+        product: product.name,
+
+        quantity,
+
+        revenue,
+
+        person,
+
+        date: new Date().toLocaleString()
+
+    });
+
+    addActivity(
+        person +
+        " sold " +
+        quantity +
+        " × " +
+        product.name
+    );
+
+    save();
+
+    closeModals();
+
+    render();
+
+}
+
+
+/* =========================
+   EXPENSES
+========================= */
+
+function openExpenseModal() {
+
+    document
+        .getElementById("expenseModal")
+        .classList.remove("hidden");
+
+}
+
+
+function addExpense() {
+
+    const name =
+        document.getElementById("expenseName").value;
+
+    const amount =
+        Number(
+            document.getElementById("expenseAmount").value
+        );
+
+    const category =
+        document.getElementById("expenseCategory").value;
+
+    const person =
+        document.getElementById("expensePerson").value
+        || "Unknown";
+
+    if(!name || amount <= 0) return;
+
+    data.expenses.push({
+
+        id: Date.now(),
+
+        name,
+
+        amount,
+
+        category,
+
+        person,
+
+        date: new Date().toLocaleString()
+
+    });
+
+    addActivity(
+        person +
+        " added expense: " +
+        name +
+        " (" +
+        money(amount) +
+        ")"
+    );
+
+    save();
+
+    closeModals();
+
+    render();
+
+}
+
+
+/* =========================
+   ACTIVITY
+========================= */
+
+function addActivity(text) {
+
+    data.activity.unshift({
+
+        text,
+
+        date: new Date().toLocaleString()
+
+    });
+
+    data.activity =
+        data.activity.slice(0,100);
+
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function saveProjectName() {
+
+    const name =
+        document.getElementById("projectName").value;
+
+    if(!name) return;
+
+    data.projectName = name;
+
+    addActivity(
+        "Project name changed."
+    );
+
+    save();
+
+    render();
+
+}
+
+
+function changePassword() {
+
+    const password =
+        document.getElementById("newPassword").value;
+
+    if(password.length < 4) {
+
+        alert(
+            "Password must be at least 4 characters."
+        );
+
+        return;
+
+    }
+
+    data.password = password;
+
+    addActivity(
+        "Project password changed."
+    );
+
+    save();
+
+    document.getElementById("newPassword").value = "";
+
+    alert("Password changed.");
+
+}
+
+
+/* =========================
+   CLOSE MODALS
+========================= */
+
+function closeModals() {
+
+    document
+        .querySelectorAll(".modal")
+        .forEach(modal => {
+
+            modal.classList.add("hidden");
+
+        });
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render() {
+
+    const revenue =
+        calculateRevenue();
+
+    const expenses =
+        calculateExpenses();
+
+    const profit =
+        revenue - expenses;
+
+    document.getElementById("revenue").textContent =
+        money(revenue);
+
+    document.getElementById("expenses").textContent =
+        money(expenses);
+
+    document.getElementById("profit").textContent =
+        money(profit);
+
+    document.getElementById("balance").textContent =
+        money(profit);
+
+    document.getElementById("moneyRevenue").textContent =
+        money(revenue);
+
+    document.getElementById("moneyExpenses").textContent =
+        money(expenses);
+
+    document.getElementById("moneyProfit").textContent =
+        money(profit);
+
+    document.getElementById("moneyBalance").textContent =
+        money(profit);
+
+
+    /* INVENTORY */
+
+    const inventory =
+        document.getElementById("inventoryTable");
+
+    inventory.innerHTML = "";
+
+    if(data.products.length === 0) {
+
+        inventory.innerHTML =
+            `<tr>
+                <td colspan="6" class="empty">
+                    No products yet.
+                </td>
+            </tr>`;
+
+    } else {
+
+        data.products.forEach(product => {
+
+            const value =
+                product.quantity *
+                product.cost;
+
+            inventory.innerHTML += `
+
+                <tr>
+
+                    <td>${product.name}</td>
+
+                    <td>
+                        <span class="badge">
+                            ${product.category || "Other"}
+                        </span>
+                    </td>
+
+                    <td>${product.quantity}</td>
+
+                    <td>${money(product.cost)}</td>
+
+                    <td>${money(product.price)}</td>
+
+                    <td>${money(value)}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+
+    /* SALES */
+
+    const sales =
+        document.getElementById("salesTable");
+
+    sales.innerHTML = "";
+
+    if(data.sales.length === 0) {
+
+        sales.innerHTML =
+            `<tr>
+                <td colspan="5" class="empty">
+                    No sales yet.
+                </td>
+            </tr>`;
+
+    } else {
+
+        data.sales.forEach(sale => {
+
+            sales.innerHTML += `
+
+                <tr>
+
+                    <td>${sale.product}</td>
+
+                    <td>${sale.quantity}</td>
+
+                    <td class="green">
+                        ${money(sale.revenue)}
+                    </td>
+
+                    <td>${sale.person}</td>
+
+                    <td>${sale.date}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+
+    /* EXPENSES */
+
+    const expenseTable =
+        document.getElementById("expensesTable");
+
+    expenseTable.innerHTML = "";
+
+    if(data.expenses.length === 0) {
+
+        expenseTable.innerHTML =
+            `<tr>
+                <td colspan="5" class="empty">
+                    No expenses yet.
+                </td>
+            </tr>`;
+
+    } else {
+
+        data.expenses.forEach(expense => {
+
+            expenseTable.innerHTML += `
+
+                <tr>
+
+                    <td>${expense.name}</td>
+
+                    <td class="red">
+                        ${money(expense.amount)}
+                    </td>
+
+                    <td>${expense.category || "Other"}</td>
+
+                    <td>${expense.person}</td>
+
+                    <td>${expense.date}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+
+    /* ACTIVITY */
+
+    const activity =
+        document.getElementById("activityList");
+
+    activity.innerHTML = "";
+
+    if(data.activity.length === 0) {
+
+        activity.innerHTML =
+            `<div class="empty">
+                No activity yet.
+            </div>`;
+
+    } else {
+
+        data.activity.forEach(item => {
+
+            activity.innerHTML += `
+
+                <div style="
+                    padding:15px;
+                    border-bottom:1px solid #172238;
+                ">
+
+                    <div>${item.text}</div>
+
+                    <small style="color:#718096">
+                        ${item.date}
+                    </small>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+
+    /* RECENT */
+
+    const recent =
+        document.getElementById("recentActivity");
+
+    recent.innerHTML = "";
+
+    data.activity
+        .slice(0,5)
+        .forEach(item => {
+
+            recent.innerHTML += `
+
+                <div style="
+                    padding:12px 0;
+                    border-bottom:1px solid #172238;
+                ">
+
+                    ${item.text}
+
+                    <div style="
+                        color:#718096;
+                        font-size:11px;
+                        margin-top:4px;
+                    ">
+
+                        ${item.date}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+}
+
+
+/* INITIAL */
+
+document.getElementById("projectName").value =
+    data.projectName;
+
+</script>
+
+</body>
+</html>
